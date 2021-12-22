@@ -1,0 +1,11 @@
+.btn[disabled]{
+    filter: grayscale();
+}
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched{
+    border: 1px solid red;
+}
+
+.bt-recipe-img img {
+    max-height: 200px;
+}

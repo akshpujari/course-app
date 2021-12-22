@@ -1,0 +1,13 @@
+.navbar-default{
+    background-color: white;
+    box-shadow: 0 1px 10px rgb(0 0 0 / 20%);
+}
+.navbar-brand{ 
+    font-size: 20px; 
+    font-weight: bold;
+    margin-right: 50px;
+}
+.navbar-nav .active>a{
+    color: black;
+    background-color: #f6f6f6;
+}

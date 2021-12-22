@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-xs-12">
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" formControlName="name" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="imagePath">ImageURL</label>
+                        <input type="text" id="imagePath" formControlName="imagePath" class="form-control" #imagePath>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 bt-recipe-img">
+                    <img [src]="imagePath.value" class="img-responsive">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="discription">Discription</label>
+                        <textarea type="text" id="discription" formControlName="description" class="form-control"
+                            rows="6"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12" formArrayName="ingredients">
+                    <div class="row" *ngFor="let ingredientControl of getIngredientControl(); let i=index"
+                        [formGroupName]="i" style="margin-top: 10px;">
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" formControlName="name">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="number" class="form-control" formControlName="amount">
+                        </div>
+                        <div class="col-xs-2">
+                            <select id="count" name="count" class="form-control" formControlName="count">
+                                <option name="Kg">Kg</option>
+                                <option name="Pack">Pack</option>
+                                <option name="Count">Count</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button" class="btn btn-danger" (click)="onDeleteIngredientForm(i)">X</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button type="button" class="btn btn-primary" (click)="onAddIngredient()">
+                                Add Ingredient</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8"></div>
+                <div class="col-xs-4">
+                    <a style="margin-right: 20px;" type="button" (click)="onCancel()">Cancel</a>
+                    <button type="submit" class="btn btn-primary" [disabled]='!recipeForm.valid'>Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+a{
+    cursor: pointer;
+}
+body {
+    min-height: 100vh;
+    background: #f8f9fa;
+    color: #565656;
+}
+
+:root {
+    --brand-primary-color: #004680;
+    --brand-secondary-color: #f09d0f;
+    --bt-section-label-color: #426a8a;
+}
+
+.bt-food-logo {
+    color: var(--brand-primary-color);
+}
+
+.bt-food-logo-accent {
+    color: var(--brand-secondary-color);
+}
+
+.bt-section-label {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--bt-section-label-color);
+}
+.btn-danger{
+    background-color: var(--brand-secondary-color);
+    border-color: var(--brand-secondary-color);
+}

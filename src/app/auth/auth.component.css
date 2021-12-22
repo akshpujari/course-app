@@ -1,0 +1,9 @@
+.bt-login{
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+}
+.bt-auth-toggle{
+    margin-top: 50px;
+    text-align: center
+}

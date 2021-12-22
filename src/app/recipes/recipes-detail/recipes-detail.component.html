@@ -1,0 +1,38 @@
+<div class="list-group-item">
+    <div class="row">
+        <div class="col-xs-12">
+            <img [src]="recipe.imagePath" alt="recipeImg" class="img-responsive bt-recipe-img">
+        </div>
+    </div>
+    <div class="recipe-details-text">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>{{recipe.name}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">{{recipe.description}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="float: right;">
+                <a (click)="toAddToShoppingList()" style="cursor: pointer;">Add To Shopping List</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="list-group">
+                    <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+                        {{ingredient.name}}, {{ingredient.amount}} {{ingredient.count}}
+                    </li>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="text-align: right; float: right;">
+                <a class="btn btn-danger" style="margin-right: 10px ;" (click)=" onDeleteRecipe()">Delete</a>
+                <a class="btn btn-primary" style="cursor: pointer;" (click)="onEditRecipe()">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
