@@ -31,3 +31,12 @@ body {
     background-color: var(--brand-secondary-color);
     border-color: var(--brand-secondary-color);
 }
+
+app-root > .container {
+    min-height: calc(100vh - 95px);
+}
+
+.bt-copyrights {
+    display: block;
+    text-align: center;
+}
