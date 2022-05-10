@@ -2,27 +2,17 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
-import { map } from "rxjs/operators";
-import *as fromApp from '../store/app.reducer'
-import { Store } from "@ngrx/store";
-import * as AuthActions from "./store/auth.actions";
+import { map, take } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) { }
+    constructor(private authService: AuthService, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): boolean | Promise<boolean> | Observable<boolean | UrlTree> {
-        return this.store.select('auth').pipe(
-            map(authState => {
-                if (authState.initialUser) {
-                    return authState.initialUser; //select gives object not user data so need to map
-                } else {
-                    // Try local storage
-                    this.store.dispatch(new AuthActions.AuthLogin());
-                }
-            }),
+        return this.authService.user.pipe(
+            take(1),
             map(user => {
                 const isAuth = !!user;
                 if (isAuth) {

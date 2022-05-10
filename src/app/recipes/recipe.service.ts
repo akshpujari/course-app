@@ -1,20 +1,20 @@
 //Recipe Service is not using currently
-import { EventEmitter, Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
-import * as ShoppingListActions from '../shopping-list/store/shopping-list.action'
-import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer'
-import * as fromApp from '../store/app.reducer'
+import { HttpClient } from "@angular/common/http";
 
-@Injectable()
+
+@Injectable({
+    providedIn: 'root'
+})
 export class RecipeService {
     recipeChanged = new Subject<Recipe[]>();
 
     private recipes: Recipe[] = [];
-    constructor(private slService: ShoppingListService, private store: Store<fromApp.AppState>) { }
+    constructor(private slService: ShoppingListService, private http:HttpClient) { }
 
     getRecipes() {
         return this.recipes.slice();
@@ -29,7 +29,7 @@ export class RecipeService {
     }
 
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
-        this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients))
+        this.slService.addIngredients(ingredients)
     }
     addRecipe(newRecipe: Recipe) {
         this.recipes.push(newRecipe);

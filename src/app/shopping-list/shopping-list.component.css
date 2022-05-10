@@ -1,0 +1,46 @@
+.bt-v-card {
+    display: inline-block;
+    width: 250px;
+    height: 150px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 15%);
+    margin: 10px;
+    overflow: hidden;
+}
+
+.bt-title {
+    background-color: #4d4d4d;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 21px;
+}
+
+.bt-name {
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.bt-emp-id {
+    font-size: 10px;
+}
+
+.bt-details div {
+    display: inline-block;
+    width: calc(50% - 1px);
+    text-align: center;
+    padding: 25px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.bt-details div.bt-separator {
+    width: 1px;
+    padding: 0;
+    height: 20px;
+    background-color: #4d4d4d57;
+}

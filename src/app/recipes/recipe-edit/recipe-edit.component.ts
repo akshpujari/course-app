@@ -2,11 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer'
-import { map } from 'rxjs/operators';
-import * as RecipeActions from '../store/recipes.actions'
 import { Subscription } from 'rxjs';
+import { RecipeService } from '../recipe.service';
+import { DataStoreService } from 'src/app/shared/data-store-service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -18,12 +16,12 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   editMode = false;
   recipeForm: FormGroup;
   ingredients: Ingredient[];
+  recipes =[];
 
   private storeSub: Subscription;
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
-    private store: Store<fromApp.AppState>) { }
+    private router: Router, private recipeService: RecipeService,private dataStorageService: DataStoreService) { }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
@@ -50,11 +48,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     let recipeIngredients = new FormArray([]);
 
     if (this.editMode) {
-      this.storeSub = this.store.select('recipes').pipe(map(recipeState => {
-        return recipeState.recipes.find((recipe, index) => {
-          return index === this.id;
-        })
-      })).subscribe(recipe => {
+     const recipe = this.recipeService.getRecipe(this.id)
         recipeName = recipe.name;
         recipeImgPath = recipe.imagePath;
         recipeDescription = recipe.description;
@@ -69,7 +63,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
             );
           }
         }
-      })
 
     }
     this.recipeForm = new FormGroup(
@@ -88,12 +81,12 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.editMode == true) {
-      this.store.dispatch(new RecipeActions.UpdateRecipes({ index: this.id, newRecipe: this.recipeForm.value }))
+      this.recipeService.updateRecipe(this.id,this.recipeForm.value)
     }
     else {
-      this.store.dispatch(new RecipeActions.AddRecipe(this.recipeForm.value))
+      this.recipeService.addRecipe(this.recipeForm.value)
     }
-    this.store.dispatch(new RecipeActions.StoreRecipe());
+    this.dataStorageService.storeRecipes()
     this.onCancel();
   }
 

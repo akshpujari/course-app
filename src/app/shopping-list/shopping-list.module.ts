@@ -7,6 +7,7 @@ import { ShoppingListRoutingModule } from "./shopping-list-routing.module";
 import { ShoppingListComponent } from "./shopping-list.component";
 
 
+
 @NgModule({
     declarations: [
         ShoppingListComponent,

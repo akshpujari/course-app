@@ -1,73 +1,67 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { Subscription } from "rxjs";
-import { PlaceHolderDirective } from "../shared/place-holder/place-holder.directive";
-import * as fromApp from '../store/app.reducer'
-import * as AuthActions from './store/auth.actions'
+import {
+  Component,
+  ViewChild,
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { PlaceHolderDirective } from '../shared/place-holder/place-holder.directive';
+import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
-    selector: 'app-auth',
-    templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.css']
+  selector: 'app-auth',
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnInit, OnDestroy {
-    isLoginMode = true;
-    isLoading = false;
-    error: string = null;
-    @ViewChild(PlaceHolderDirective) alertHost: PlaceHolderDirective
+export class AuthComponent{
+  isLoginMode = true;
+  isLoading = false;
+  error: string = null;
+  @ViewChild(PlaceHolderDirective) alertHost: PlaceHolderDirective;
 
-    private closeSub: Subscription;
-    private storeSub: Subscription;
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-    constructor(
-        private componentFactoryResolver: ComponentFactoryResolver,
-        private store: Store<fromApp.AppState>) { }
+  onSwitchMode() {
+    this.isLoginMode = !this.isLoginMode;
+  }
 
-    ngOnInit() {
-        this.storeSub = this.store.select('auth').subscribe(authState => {
-            this.isLoading = authState.loading;
-            this.error = authState.authError;
-        })
+  onSubmit(form: NgForm) {
+    let authObr: Observable<AuthResponseData>;
+    if (!form.valid) {
+      return;
     }
+    const email = form.value.email;
+    const password = form.value.password;
+    const confirmPassword = form.value.confirmPassword;
 
-    onSwitchMode() {
-        this.isLoginMode = !this.isLoginMode;
+    this.isLoading = true;
+    if (this.isLoginMode) {
+      authObr = this.authService.login(email, password);
+    } else {
+      if (password !== confirmPassword) {
+        this.isLoading = false;
+        this.error = 'Passwords do not match';
+      } else {
+        authObr = this.authService.signUp(email, password);
+      }
     }
+    authObr.subscribe(
+      (response) => {
+        // console.log(response, "akshata");
+        this.router.navigate(['/recipes']);
+        this.isLoading = false;
 
-    onSubmit(form: NgForm) {
-        if (!form.valid) {
-            return;
-        }
-        const email = form.value.email;
-        const password = form.value.password;
-        const confirmPassword = form.value.confirmPassword;
+      },
+      (errorMessage) => {
+        // console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      }
+    );
+    form.reset();
+  }
 
-        this.isLoading = true;
-        if (this.isLoginMode) {
-            this.store.dispatch(new AuthActions.LoginStart({ email: email, password: password }))
-        } else {
-            if (password !== confirmPassword) {
-                this.isLoading = false;
-                this.error = "Passwords do not match";
-            } else {
-                this.store.dispatch(new AuthActions.SignupStart({ email: email, password: password }))
-            }
-        }
-        form.reset();
-    }
-
-    onHandleAlert() {
-        this.store.dispatch(new AuthActions.ClearError())
-    }
-
-    ngOnDestroy() {
-        if (this.closeSub) {
-            this.closeSub.unsubscribe();
-        }
-        if (this.storeSub) {
-            this.storeSub.unsubscribe();
-        }
-    }
 }

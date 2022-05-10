@@ -11,9 +11,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import * as fromAppReducer from './store/app.reducer';
-import { AuthEffects } from './auth/store/auth.effects';
-import { RecipeEffects } from './recipes/store/recipes.effects';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -28,10 +25,6 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     SharedModule,
     CoreModule,
-    StoreModule.forRoot(fromAppReducer.appReducer),
-    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
-    StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent]
 })

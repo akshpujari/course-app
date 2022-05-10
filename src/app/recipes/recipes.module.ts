@@ -17,7 +17,7 @@ import { RecipesComponent } from "./recipes.component";
         RecipesDetailComponent,
         RecipeItemComponent,
         RecipesStartComponent,
-        RecipeEditComponent,
+        RecipeEditComponent
     ],
     imports: [
         RouterModule,

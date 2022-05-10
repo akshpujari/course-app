@@ -1,4 +1,5 @@
-<div class="list-group-item">
+<app-not-found *ngIf="!recipe"></app-not-found>
+<div *ngIf="recipe" class="list-group-item">
     <div class="row">
         <div class="col-xs-12">
             <img [src]="recipe.imagePath" alt="recipeImg" class="img-responsive bt-recipe-img">

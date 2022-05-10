@@ -3,10 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { __param } from 'tslib';
 import { Recipe } from '../recipe.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../store/app.reducer'
-import { map, switchMap } from 'rxjs/operators';
-import * as RecipeActions from '../store/recipes.actions'
-import * as SlActions from '../../shopping-list/store/shopping-list.action'
+import { RecipeService } from '../recipe.service';
+import { DataStoreService } from 'src/app/shared/data-store-service';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -20,28 +18,18 @@ export class RecipesDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<fromApp.AppState>) { }
+    private recipeService:RecipeService,
+    private dataStorageService:DataStoreService) { }
 
   ngOnInit() {
-    this.route.params.pipe(map(params => {
-      return +params['id']
-    }),
-      switchMap(id => {
-        this.id = id;
-       return this.store.select('recipes');
-      }),
-      map(recipesState => {
-        return recipesState.recipes.find((recipes, index) => {
-          return index === this.id
-        });
-      })
-    ).subscribe((recipes) => {
-      this.recipe = recipes
-    });
+    this.route.params.subscribe((params:Params)=>{
+      this.id = +params['id'];
+      this.recipe = this.recipeService.getRecipe(this.id)
+    })
   }
 
   toAddToShoppingList() {
-    this.store.dispatch(new SlActions.AddIngredients(this.recipe.ingredients))
+    this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients)
     this.router.navigate(['/shopping-list']);
   }
 
@@ -50,8 +38,8 @@ export class RecipesDetailComponent implements OnInit {
   }
 
   onDeleteRecipe() {
-    this.store.dispatch(new RecipeActions.DeleteRecipes(this.id));
-    this.store.dispatch(new RecipeActions.StoreRecipe());
+    this.recipeService.deleteRecipe(this.id);
+    this.dataStorageService.storeRecipes()
     this.router.navigate(['../'], { relativeTo: this.route })
   }
 

@@ -1,13 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Placeholder } from "@angular/compiler/src/i18n/i18n_ast";
 import { NgModule } from "@angular/core";
 import { LoadingSpinnerComponent } from "./loading.spinner/loading-spinner.component";
+import { NotFoundComponent } from "./not-found/not-found.component";
 import { PlaceHolderDirective } from "./place-holder/place-holder.directive";
 
 @NgModule({
     declarations:[
         LoadingSpinnerComponent,
         PlaceHolderDirective,
+        NotFoundComponent
 
     ],
     imports:[
@@ -16,7 +17,8 @@ import { PlaceHolderDirective } from "./place-holder/place-holder.directive";
     exports:[
         LoadingSpinnerComponent,
         PlaceHolderDirective,
-        CommonModule    
+        CommonModule,
+        NotFoundComponent   
     ]
 })
 export class SharedModule{
